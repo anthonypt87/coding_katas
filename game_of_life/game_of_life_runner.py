@@ -116,18 +116,18 @@ def parse_args():
     parser = argparse.ArgumentParser(
         usage=""" %(prog)s [options].
 
-If "--filename" is NOT passed in, the user can type in the board they want to
-test. Hit return twice to mark that the input board is complete. Boards should
-look like:
+If "--filename" is not passed in, the user can type in the board they want to
+test. Boards should look like:
 
 0 0
 0 1
 
-where "0"s represent dead cells and "1"s represent live cells.
+where "0"s represent dead cells and "1"s represent live cells. Hit return twice
+when done drawing the board.
 
-By default uses `curses` to draw the output. If on a non unix like OS, please
-use "--animator print_all" for a less pleasant but working experience.
-Important caveat: a "_curses.error" will be raises if your screen resolution is
+By default uses `curses` to draw the output. If using a non unix like OS,
+please use "--animator print_all" for a less pleasant but working experience.
+Important caveat: a "_curses.error" will be raised if your screen resolution is
 too small for larger boards.
 
 Sample Calls:
@@ -137,7 +137,7 @@ python %(prog)s --filename=boards/h.txt --output-live-cell-character=' '
     --output-dead-cell-character='X' <-- Also really cool
 python %(prog)s
 python %(prog)s --filename=boards/blinker.txt --step-to-print=5
-python %(prog)s --filename=boards/blinker.txt --animator=print_all
+python %(prog)s --filename=boards/beacon.txt --animator=print_all
 """
     )
     parser.add_argument(
