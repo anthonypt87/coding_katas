@@ -17,8 +17,8 @@ class GameOfLifeRunnerIntegrationTest(unittest.TestCase):
         )
         drawer = Drawer()
         animator = animators.SingleFrameAnimator(
-            2,
             drawer,
+            2,
             print_function=print_function
         )
 

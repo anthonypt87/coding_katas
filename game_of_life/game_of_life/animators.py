@@ -6,8 +6,6 @@ object that represents the initial game board state.
 import curses
 import time
 
-from game_of_life.drawer import Drawer
-
 
 class PrintAllAnimator(object):
     """`Animator` that prints an iteration of the `Board` one step at a time,
@@ -16,13 +14,13 @@ class PrintAllAnimator(object):
 
     _sleep_time = 1
 
-    def __init__(self, drawer=None):
+    def __init__(self, drawer):
         """Creates the `PrintAllAnimator`
 
-        Keyword Args:
+        Args:
            drawer - `Drawer` object that describes how each board will be drawn
         """
-        self._drawer = drawer or Drawer()
+        self._drawer = drawer
 
     def animate(self, board):
         """Given a `Board` representing the initial game state, draws the
@@ -32,10 +30,13 @@ class PrintAllAnimator(object):
         Args:
             board - `Board` to animate
         """
+        iteration = 1
         while True:
-            to_print = self._drawer.draw(board)
+            to_print = 'Iteration %s\n' % iteration
+            to_print += self._drawer.draw(board)
             to_print += '\n'
             print to_print
+            iteration += 1
             board.step()
             time.sleep(self._sleep_time)
 
@@ -46,13 +47,13 @@ class CursesAnimator(object):
     control library to animate the board.
     """
 
-    def __init__(self, drawer=None):
+    def __init__(self, drawer):
         """Creates the `CursesAnimator`
 
-        Keyword Args:
+        Args:
            drawer - `Drawer` object that describes how each board will be drawn
         """
-        self._drawer = drawer or Drawer()
+        self._drawer = drawer
 
     def animate(self, board):
         """Animates the game board using curses to continually draw and refresh
@@ -83,9 +84,15 @@ class CursesAnimator(object):
 
     def _draw_board_on_screen(self, screen, board, iteration):
         screen.addstr(0, 0, 'Game Of Life')
-        screen.addstr(1, 0, 'Welcome to the game of life! Hit q to quit')
-        screen.addstr(3, 0, 'Iteration %i' % iteration)
-        screen.addstr(4, 0, self._drawer.draw(board))
+        screen.addstr(
+            1,
+            0,
+            'Welcome to the game of life! Hit q to quit or press or hold any'
+        )
+        screen.addstr(2, 0, 'other character to speed up the animation')
+
+        screen.addstr(4, 0, 'Iteration %i' % iteration)
+        screen.addstr(5, 0, self._drawer.draw(board))
         screen.refresh()
 
 
@@ -100,20 +107,27 @@ class SingleFrameAnimator(object):
 
     def __init__(
         self,
+        drawer,
         step_to_animate,
-        drawer=None,
         print_function=print_function
     ):
         """Creates a `SingleFrameAnimator` object
         Args:
+            drawer - `Drawer` object that describes how each board will be
+                drawn
             step_to_animate - the step that we want to animate
+        Keyword Args:
+            print_function - injected dependency that describes how the output
+                will be printed
         """
+        self._drawer = drawer
         self._step_to_animate = step_to_animate
-        self._drawer = drawer or Drawer()
         self._print_function = print_function
 
     def animate(self, board):
-        """"""
+        """Animates a single frame on the board described by
+        `step_to_animate`
+        """
         for _ in xrange(self._step_to_animate - 1):
             board.step()
 

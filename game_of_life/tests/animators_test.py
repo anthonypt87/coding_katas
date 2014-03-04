@@ -12,8 +12,8 @@ class SingleFrameAnimatorTest(unittest.TestCase):
         drawer = mock.Mock()
         print_function = mock.Mock()
         animator = animators.SingleFrameAnimator(
+            drawer,
             step_to_animate,
-            drawer=drawer,
             print_function=print_function
         )
 

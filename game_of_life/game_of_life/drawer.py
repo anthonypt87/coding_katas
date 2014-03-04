@@ -2,6 +2,10 @@
 class Drawer(object):
     """Responsible for drawing the board"""
 
+    def __init__(self, live_cell_character='1', dead_cell_character='0'):
+        self._live_cell_character = live_cell_character
+        self._dead_cell_character = dead_cell_character
+
     def draw(self, board):
         """Draws and prints a `board`
 
@@ -16,8 +20,14 @@ class Drawer(object):
         rows = []
         for y in xrange(board.y_size):
             row = ' '.join(
-                '1' if board[x, y] else '0' for x in xrange(board.x_size)
+                self._draw_cell(board[x, y]) for x in xrange(board.x_size)
             )
             rows.append(row)
 
         return '\n'.join(rows)
+
+    def _draw_cell(self, is_live_cell):
+        if is_live_cell:
+            return self._live_cell_character
+        else:
+            return self._dead_cell_character

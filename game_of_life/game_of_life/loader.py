@@ -56,7 +56,7 @@ class Loader(object):
         return x_length, y_length
 
     def _get_values(self, line):
-        return line.split(' ')
+        return line.strip().split(' ')
 
     def _is_live_cell(self, value):
         if value == '1':
