@@ -1,2 +1,0 @@
-class InvalidBoardError(Exception):
-    pass
